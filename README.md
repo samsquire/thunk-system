@@ -1,28 +1,62 @@
-# thunk-operating-system
+# thunk-system
 
-To create a group of behaviour, you create a thunk:
+T
 
-```
-thunk 
-```
+Thunks are events.
 
-To enable a new feature in the thunk, open the command line and type
+When the computer turns on, a number of thunks are started automatically from @startup. 
 
-```
-install <feature name url>
-```
-
-To install a piece of software from an organisation:
+Thunk-operating-system starts as a number of thunks for display and they are running in parallel.
 
 ```
-install @organisation/software-name
+io_uring_queue_init | io_uring_register_eventfd | socket | bind | listen | add_accept_request | io_uring_prep_rqe | io_uring_submit
+io_uring_wait | add_read_request | handle_client_request
+io_uring_wait | event_read | add_accept_request
 ```
 
-Thunks can placeholder.
+heavily linked document is actually the system.
 
-Thunks compose.
+synchronizing two files:
 
-Thunks might have a stack, or might not.
+```
+send-file = receive-file
+
+```
+
+mapping, home for content, hashmap
+
+```
+users(1) = server(5)
+
+users(X) server(X) = send-user(X) receive-user(X)
+
+```
+
+
+
+thunks a layers
+
+an cross-interaction thunk interacting with a thunk, layers affecting different outputs
+
+metacircular
+
+thunks are scheduled, control flow is scheduled between them
+
+thunks are reentrant, they're not functions, they're rules
+
+high level application language, protocol baked into control flow
+
+ast sidebar
+
+time operator in a thunk, "up to"
+
+lifo, queue, stack
+
+quantum term rewriting
+
+create trie
+
+keep file synchronized
 
 # Thunk orderise
 
@@ -32,7 +66,7 @@ Thunks might have a stack, or might not.
 
 # Graph edit
 
-the graph is how things work at the moment, you can move it around and keep the same behaviour.
+the graph is how things work at the moment as an architecture, you can move it around and keep the same behaviour.
 
 
 
@@ -91,6 +125,9 @@ struct Name {
 
 ```
 
+```
+```
+
 
 
 ```
@@ -139,17 +176,22 @@ real time strategy grid rendering, text based
 # What do you want to do?
 
 * I want to display lots of things very fast.
+* I want to write inefficient code but the compiler optimises it for me.
+* I want scrolling to be very smooth.
+* I want to scroll page-at-a-time or to a particular time.
+* I want navigation to the start of an event sequence.
 * I want to accept lots of traffic for the minimum cost.
 * I want to compile and make changes extremely fast.
 * I want low latency.
 * I want bottlenecks to be avoided.
-* I want to compile incrementally.
+* I want to compile incrementally. (Modules)
 * I want to define behaviours and fuse them together.
 * I want architecture to be transformable.
 * I want tradeoffs to be pickable.
 * I want data structures to be easy to clone.
 * I want serialization that is performant.
-* There's an AST for that.
+* There's an AST for that: an AST for defining desired behaviours.
+* I want to accept any quantity of data.
 
 ```
 ```
@@ -159,6 +201,8 @@ effects without a stack?
 types are the valuable thing
 
 useful tables, placeholders
+
+modern programming working around a LIFO (stack)
 
 # File system object pipeline
 
@@ -233,6 +277,26 @@ IntelliJ UI is strange, because the tools we use are strange
 | ------------------------- | ----------------------------- |
 | fact(parameter)           | Associate parameter with fact |
 |                           |                               |
+
+# Command line
+
+To create a group of behaviour, you create a thunk:
+
+```
+thunk 
+```
+
+To enable a new feature in the thunk, open the command line and type
+
+```
+install <feature name url>
+```
+
+To install a piece of software from an organisation:
+
+```
+install @organisation/software-name
+```
 
 
 
@@ -420,10 +484,34 @@ monad hierarchy, things can be wrapped and maintain properties of the things ins
 
 # Beautiful interactions
 
+# @startup
+
+There is a natural startup order.
+
+* threads are created
+* listening sockets
+* mailboxes created
 
 
 
 
 
+Thunks can placeholder.
+
+Thunks compose.
+
+Thunks might have a stack, or might not.
 
 Thunks are configured with URLs
+
+
+
+```
+			thing2
+			thing3
+thing1		thing4
+			thing5
+			thing6
+			thing7
+```
+
