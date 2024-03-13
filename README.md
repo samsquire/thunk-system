@@ -1,8 +1,159 @@
 # thunk-system
 
-T
+tiling paged text manager
 
-Thunks are events.
+```
+thunk
+page [3]
+
+ [+] scan-for-pages | spawn-pages
+ [+] postgres-connect
+ [+] send-io-thread
+ [+] recv-io-thread
+ [+] recv-io-thread receive-tcp | to-thread | dispatch
+  [+] dispatch | parse | handler
+   [+] rocks-db-tree | thread
+   [+] write-request | write-data-to-local-shard
+   [+] read-data-request | enqueue-read-request-locally | global-exclusivity do-batch-reads | cache-read
+   [+] handler | forked-task
+     [+] forked-task
+      [+] group-exclusivity send-lockstep
+  
+ [+] clients
+ 	[+] client-1-100
+ [+] query-to-plan
+ [+] load-balancing
+ [+] circuit-breakers
+ [+] rate-limiting
+ [+] retries
+ [+] backoff
+ 
+```
+
+```
+coroutine() {
+	a = fire fetchsomething
+	b = fire fetchsomething
+	c = fire fetchsomething
+	wait a b c
+
+}
+```
+
+software is just communication! it's cqrs
+
+when socket receives data, need to dispatch it to the mailbox of that thread
+
+what can be parallel
+
+```
+seek
+next
+```
+
+raft synchronization
+
+rocksdb parallel scan
+
+logistics of shuffling data around
+
+things inside things, like malloc in a loop
+
+"questionnaire, what should happen if x fails?"
+
+memory blocks abstraction, moving through blocks
+
+compile time memory blocks
+
+scale data structure
+
+scaling iteration
+
+to get into this position, you have to enter at the top
+
+method calls data comes in through the top
+
+want-in-memory chunk or stream of events (parsing)
+
+tokens are events
+
+streaming traffic
+
+
+
+# commpatterns
+
+* I need a callback
+* I need to be atomic with regard to the group.
+* I need to be atomic with regard to all groups.
+* I need to be solitary in all groups. (masks)
+
+topology of barriers
+
+no structure
+
+lockstep I/O
+
+durability? loops
+
+rescheduler
+
+a program that can rewrite the callgrid,
+
+global scheduling?
+
+right click menu reference [3]
+
+```
+
+thunk
+page [3]
+
+Δ postgres-connect Δ io-thread receive-http | to-thread | dispatch Δ dispatch | parse | enqueue-response
+Δ scan-for-actors | spawn 
+```
+
+wasm?
+
+pagination is also bucketing, allocation to terms
+
+linear algebra, a=0.5 b=0.6 and function
+
+traversal hit
+
+debounced batch APIs
+
+repeating sections
+
+method calls are batches or everything is a queue, chunks
+
+add indirection and ratios
+
+
+
+# Value Grids
+
+can joins represent control flow?
+
+
+
+```
+pagination      thread				overlap					interpolation
+authentication  io					collision-detection		channel
+authorisation   syscall				problem-space			event-grid
+two-pane        download			fast-composite-wayland	reductions
+three-pane      line				fast-traversal			stacks
+login-page		circle				image					loops
+package			menu				overlapping-regions		async
+component		file				lease					behaviour-stacks
+install			chunk				lock					server
+window			chunk-hierarchy		cache					protocol
+unit			settings			load-balance			stream
+object			scroll				shard					upload
+query			pipeline			timeline				
+```
+
+
 
 When the computer turns on, a number of thunks are started automatically from @startup. 
 
@@ -13,6 +164,8 @@ io_uring_queue_init | io_uring_register_eventfd | socket | bind | listen | add_a
 io_uring_wait | add_read_request | handle_client_request
 io_uring_wait | event_read | add_accept_request
 ```
+
+performance of data driven pipelines
 
 heavily linked document is actually the system.
 
@@ -34,29 +187,7 @@ users(X) server(X) = send-user(X) receive-user(X)
 
 
 
-thunks a layers
 
-an cross-interaction thunk interacting with a thunk, layers affecting different outputs
-
-metacircular
-
-thunks are scheduled, control flow is scheduled between them
-
-thunks are reentrant, they're not functions, they're rules
-
-high level application language, protocol baked into control flow
-
-ast sidebar
-
-time operator in a thunk, "up to"
-
-lifo, queue, stack
-
-quantum term rewriting
-
-create trie
-
-keep file synchronized
 
 # Thunk orderise
 
@@ -399,28 +530,6 @@ worker-thread coroutine(A) yield(A) = sleep(A)
 
 # 7. Can test if things work together and know they have the expected behaviour
 
-# 8. Value Grids
-
-can joins represent control flow?
-
-
-
-```
-pagination      thread				overlap					interpolation
-authentication  io					collision-detection		channel
-authorisation   syscall				problem-space			event-grid
-two-pane        download			fast-composite-wayland	reductions
-three-pane      line				fast-traversal			stacks
-login-page		circle				image					loops
-package			menu				overlapping-regions		async
-component		file				lease					behaviour-stacks
-install			chunk				lock					server
-window			chunk-hierarchy		cache					protocol
-unit			settings			load-balance			stream
-object			scroll				shard					upload
-query			pipeline			timeline				
-```
-
 can a token stream decide what to dispatch on
 
 compositional interleaving
@@ -515,3 +624,42 @@ thing1		thing4
 			thing7
 ```
 
+thunks a layers
+
+an cross-interaction thunk interacting with a thunk, layers affecting different outputs
+
+metacircular
+
+thunks are scheduled, control flow is scheduled between them
+
+thunks are reentrant, they're not functions, they're rules
+
+high level application language, protocol baked into control flow
+
+ast sidebar
+
+time operator in a thunk, "up to"
+
+lifo, queue, stack
+
+quantum term rewriting
+
+create trie
+
+keep file synchronized
+
+living buckets
+
+ecs, sharded structs pipeline
+
+bucket enumerations and relations
+
+functional programming, a function application sequence submerged into a bucket
+
+protocol exchange
+
+Before, after, around, when
+
+two threads racing to write to disk, into their own logs
+
+Thunks are events.
